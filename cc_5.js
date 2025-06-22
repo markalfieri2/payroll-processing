@@ -10,21 +10,23 @@ function calculateOvertimePay(rate, hours) {
   return hours > 40 ? (hours - 40) * rate * 1.5 : 0;
 }
 function calculateTaxes(grossPay) {
-  return grossPay * 0.15;
+    return grossPay * 0.85; // Return net pay (85% of gross)
 }
 function processPayroll(employee) {
-  const basePay = calculateBasePay(employee.hourlyRate, employee.hoursWorked);
-  const overtimePay = calculateOvertimePay(employee.hourlyRate, employee.hoursWorked);
-  const grossPay = basePay + overtimePay;
-  const netPay = grossPay - calculateTaxes(grossPay);
-
-  return {
-    name: employee.name,
-    basePay,
-    overtimePay,
-    grossPay,
-    netPay
-  };
+    const basePay = calculateBasePay(employee.hourlyRate, employee.hoursWorked);
+    const overtimePay = calculateOvertimePay(employee.hourlyRate, employee.hoursWorked);
+    const grossPay = basePay + overtimePay;
+    const taxDeductions = grossPay * 0.15; // Calculate tax amount deducted
+    const netPay = calculateTaxes(grossPay);
+    
+    return {
+        name: employee.name,
+        basePay: basePay,
+        overtimePay: overtimePay,
+        grossPay: grossPay,
+        taxDeductions: taxDeductions,
+        netPay: netPay
+    };
 }
 employees.forEach(emp => {
   console.log(processPayroll(emp));
